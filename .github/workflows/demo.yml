@@ -9,6 +9,13 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      # need to add cache before step that install dependencies
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm #give the folder that should be cached
+          # giving package-lock as that file contains all the dependencies and ** indicate whereever the file maybe
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -23,6 +30,13 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+        # need to add cache before step that install dependencies
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm #give the folder that should be cached
+          # giving package-lock as that file contains all the dependencies and ** indicate whereever the file maybe
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Build website
